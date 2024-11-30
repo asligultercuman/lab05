@@ -17,7 +17,7 @@ void ThreadedBST::eraseTreeNodes(BSTNode* node) {
 ///-----------------------------------------------
 /// Adds a given key to the BST
 /// 
-void ThreadedBST::add(int key) {
+void ThreadedBST::add(int key) {//elif
     // create new node
     BSTNode* newNode = new BSTNode(key);
 
@@ -41,8 +41,7 @@ void ThreadedBST::add(int key) {
             if (current->rightLinkType == THREAD)
                 break; 
             current = current->right;
-        }
-    }
+        }}
 
    
     if (key < parent->key) {
