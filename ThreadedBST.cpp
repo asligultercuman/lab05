@@ -80,10 +80,17 @@ BSTNode *ThreadedBST::find(int key) {
 /// Return a pointer to the node that holds the key
 /// If the key is not found, return NULL
 /// 
-BSTNode* ThreadedBST::min() {
-	// Fill this in
-	return NULL;
-} // end-min
+BSTNode* ThreadedBST::min() {//elif
+    if (root == nullptr) {
+        return nullptr; }
+
+    BSTNode* current = root;
+    while (current->left != nullptr && current->leftLinkType != THREAD) {
+        current = current->left;}
+
+    return current; 
+}
+
 
 ///-----------------------------------------------
 /// Returns the maximum key in the ThreadedBST
