@@ -18,8 +18,46 @@ void ThreadedBST::eraseTreeNodes(BSTNode* node) {
 /// Adds a given key to the BST
 /// 
 void ThreadedBST::add(int key) {
-	// Fill this in
-} // end-add
+    // create new node
+    BSTNode* newNode = new BSTNode(key);
+
+    // if tree is empty
+    if (root == nullptr) {
+        root = newNode;
+        return;}
+
+    // finding correct node
+    BSTNode* current = root;
+    BSTNode* parent = nullptr;
+
+    while (current != nullptr) {
+        parent = current;
+
+        if (key < current->key) {
+            if (current->leftLinkType == THREAD)
+                break; 
+            current = current->left;
+        } else {
+            if (current->rightLinkType == THREAD)
+                break; 
+            current = current->right;
+        }
+    }
+
+   
+    if (key < parent->key) {
+        newNode->left = parent->left;
+        newNode->right = parent;
+        parent->left = newNode;
+        parent->leftLinkType = CHILD; 
+    } else {
+        newNode->right = parent->right;
+        newNode->left = parent;
+        parent->right = newNode;
+        parent->rightLinkType = CHILD; }
+}
+
+// end-add
 
 ///-----------------------------------------------
 /// Removes a given key from the BST (if it exists)
