@@ -97,11 +97,14 @@ BSTNode* ThreadedBST::min() {//elif
 /// Return a pointer to the node that holds the key
 /// If the key is not found, return NULL
 /// 
-BSTNode* ThreadedBST::max() {
-	// Fill this in
-	return NULL;
-} // end-max
-
+BSTNode* ThreadedBST::max() {//özge
+	if (root == NULL) return NULL;
+	
+	BSTNode* p = root;
+	while (p->rightLinkType == CHILD) p = p->right;
+	
+	return p;
+} // end-max
 ///-----------------------------------------------
 /// Given a valid pointer to a node in ThreadedBST,
 /// returns a pointer to the node that contains the inorder predecessor
@@ -117,7 +120,12 @@ BSTNode* ThreadedBST::previous(BSTNode* node) {
 /// returns a pointer to the node that contains the inorder successor
 /// If the inorder successor does not exist, returns NULL
 /// 
-BSTNode* ThreadedBST::next(BSTNode* node) {
-	// Fill this in
-	return NULL;
-} // end-next
+BSTNode* ThreadedBST::next(BSTNode* node) {//özge
+	if (node->rightLinkType == THREAD)
+		return node->right;
+
+	node = node->right;
+	while (node->leftLinkType == CHILD)
+		node = node->left;
+	return node;
+} // end-next
