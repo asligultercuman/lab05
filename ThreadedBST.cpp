@@ -1,3 +1,6 @@
+// 152120221095 Özge Erarslan
+// 152120221123 Elif Fatma Cebeci
+// 152120231104 Aslıgül Tercuman
 #include "ThreadedBST.h"
 
 ///-----------------------------------------------
@@ -61,8 +64,14 @@ void ThreadedBST::add(int key) {//elif
 ///-----------------------------------------------
 /// Removes a given key from the BST (if it exists)
 /// 
-void ThreadedBST::remove(int key) {
-	// Fill this in
+void ThreadedBST::remove(int key) {//Asligul
+	if (root == NULL)
+    return;
+
+    BSTNode* current = find(key);
+    BSTNode* parent = nullptr;
+
+    // Case 1: Leaf node
 } // end-remove
 
 ///-----------------------------------------------
@@ -71,8 +80,19 @@ void ThreadedBST::remove(int key) {
 /// If the key is not found, return NULL
 /// 
 BSTNode *ThreadedBST::find(int key) {
-	// Fill this in
-	return NULL;
+	BSTNode* current = root;//baslangic
+    while (current != NULL) {
+        if (key == current->key)
+            return current;
+
+        if (key > current->key && current->rightLinkType == CHILD)
+            current = current->right;
+        else if (key < current->key && current->leftLinkType == CHILD)
+            current = current->left;
+        else
+            break;
+    }
+    return NULL;//key not found
 } // end-find
 
 ///-----------------------------------------------
@@ -110,9 +130,15 @@ BSTNode* ThreadedBST::max() {//özge
 /// returns a pointer to the node that contains the inorder predecessor
 /// If the inorder predecessor does not exist, returns NULL
 /// 
-BSTNode* ThreadedBST::previous(BSTNode* node) {
-	// Fill this in
-	return NULL;
+BSTNode* ThreadedBST::previous(BSTNode* node) {//Asligul
+    if (node->leftLinkType == THREAD)
+        return node->left;
+
+    node = node->left;//If leftLinkType is CHILD, move to the left subtree
+    while (node->rightLinkType == CHILD)//find the max node
+        node = node->right;
+
+    return node;
 } // end-previous
 
 ///-----------------------------------------------
