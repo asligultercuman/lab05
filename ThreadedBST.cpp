@@ -64,15 +64,86 @@ void ThreadedBST::add(int key) {//elif
 ///-----------------------------------------------
 /// Removes a given key from the BST (if it exists)
 /// 
-void ThreadedBST::remove(int key) {//Asligul
-	if (root == NULL)
-    return;
-
-    BSTNode* current = find(key);
+void ThreadedBST::remove(int key) {// Asligul
+    BSTNode* current = root;
     BSTNode* parent = nullptr;
 
-    // Case 1: Leaf node
-} // end-remove
+    // Find the node to be deleted and its parent
+    while (current != nullptr && current->key != key) {
+        parent = current;
+        if (key < current->key) {
+            if (current->leftLinkType == CHILD) {
+                current = current->left;
+            }
+            else
+                return;  // Key not found
+        }
+        else {
+            if (current->rightLinkType == CHILD) {
+                current = current->right;
+            }
+            else
+                return;  // Key not found
+        }
+    }
+
+    // If the node is not found
+    if (current == nullptr) {
+        return;
+    }
+
+    // Case 1: Node has two children
+    if (current->leftLinkType == CHILD && current->rightLinkType == CHILD) {
+        // Find the in-order successor and its parent
+        BSTNode* succParent = current;
+        BSTNode* successor = current->right;
+        while (successor->leftLinkType == CHILD) {
+            succParent = successor;
+            successor = successor->left;
+        }
+
+        // Copy the successor's key to the current node
+        current->key = successor->key;
+
+        // Adjust pointers to remove the successor node
+        current = successor;
+        parent = succParent;
+    }
+
+    // Case 2 & 3: Node with one or zero children
+    BSTNode* child;
+    if (current->leftLinkType == CHILD) {
+        child = current->left;
+    }
+    else if (current->rightLinkType == CHILD) {
+        child = current->right;
+    }
+    else {
+        child = nullptr;  // Leaf node
+    }
+
+    // Adjust the parent's pointers to bypass the deleted node
+    if (parent == nullptr) {  // Deleting the root node
+        root = child;
+    }
+    else if (current == parent->left) {
+        parent->left = child;
+        if (child && current->leftLinkType == THREAD) {
+            parent->leftLinkType = THREAD;
+            parent->left = current->left;  // Maintain thread to predecessor
+        }
+    }
+    else {
+        parent->right = child;
+        if (child && current->rightLinkType == THREAD) {
+            parent->rightLinkType = THREAD;
+            parent->right = current->right;  // Maintain thread to successor
+        }
+    }
+
+    // Clean up
+    delete current;
+}//end remove
 
 ///-----------------------------------------------
 /// Searches a given key in the ThreadedBST
